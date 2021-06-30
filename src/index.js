@@ -22,24 +22,24 @@ class Board extends React.Component {
         }
     }
 
-    handleClick(i) {
+    handleClick(fieldNumber) {
         const tempSquares = this.state.squares.slice();
-        if(calculateWinner(tempSquares) || tempSquares[i]) {
+        if(calculateWinner(tempSquares) || tempSquares[fieldNumber]) {
             return;
         }
         
-        tempSquares[i] = this.state.xIsNext ? 'X' : 'O';
+        tempSquares[fieldNumber] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
             squares: tempSquares,
             xIsNext: !this.state.xIsNext,
         });
     }
 
-    renderSquare(i) {
+    renderSquare(fieldNumber) {
         return (
             <Square
-                value={this.state.squares[i]}
-                onClick={() => this.handleClick(i)}
+                value={this.state.squares[fieldNumber]}
+                onClick={() => this.handleClick(fieldNumber)}
             />
         );
     }
@@ -108,7 +108,6 @@ function calculateWinner(squares) {
         [0, 3, 6],
         [1, 4, 7],
         [2, 5, 8],
-        [0, 1, 2],
         [0, 4, 8],
         [2, 4, 6],    
     ];
