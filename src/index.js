@@ -52,6 +52,7 @@ class Game extends React.Component {
         this.state = {
             history: [{
                 squares: Array(9).fill(null),
+                coordinates: Array(9).fill(null),
             }],
             xIsNext:true,
             stepNumber: 0,
@@ -62,16 +63,19 @@ class Game extends React.Component {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const tempSquares = current.squares.slice();
+        const tempCoordinates = current.coordinates.slice();
 
         if(calculateWinner(tempSquares) || tempSquares[fieldNumber]) {
             return;
         }
         
         tempSquares[fieldNumber] = this.state.xIsNext ? 'X' : 'O';
+        tempCoordinates[this.state.stepNumber] = this.showActualCoordinates(fieldNumber);
         this.setState({
             history: history.concat([{
                 squares: tempSquares,
-            }]),            
+                coordinates: tempCoordinates,
+            }]),   
             xIsNext: !this.state.xIsNext,
             stepNumber: history.length,
         });
@@ -84,13 +88,29 @@ class Game extends React.Component {
         })
     }
 
+    showActualCoordinates(current) {
+        const tableWithCoordinates = [
+            '1,1',
+            '1,2',
+            '1,3',
+            '2,1',
+            '2,2',
+            '2,3',
+            '3,1',
+            '3,2',
+            '3,3',
+        ]
+
+        return tableWithCoordinates[current];
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
         const winner = calculateWinner(current.squares);
         const moves = history.map((step, move) => {
             const desc = move ? 
-                'Przejdz do ruchu #' + move :
+                'Przejdz do ruchu #' + move + ' Współrzędne: (' + step.coordinates[move - 1] + ')' :
                 'Przejdz na początek gry';
             return (
                 <li key={move}>
@@ -98,7 +118,6 @@ class Game extends React.Component {
                 </li>
             );
         });
-
         let status;
         
         if (winner) {
