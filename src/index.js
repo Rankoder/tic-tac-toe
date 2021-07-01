@@ -56,6 +56,10 @@ class Game extends React.Component {
             }],
             xIsNext:true,
             stepNumber: 0,
+            selected: [{
+                active: false,
+                activeStep: null,            
+            }],
         };
     }
 
@@ -104,6 +108,14 @@ class Game extends React.Component {
         return tableWithCoordinates[current];
     }
 
+    markActualMove(move) {
+        if(move === this.state.stepNumber) {
+            return 'actualStep';
+        }
+
+        return null;      
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
@@ -112,9 +124,11 @@ class Game extends React.Component {
             const desc = move ? 
                 'Przejdz do ruchu #' + move + ' Współrzędne: (' + step.coordinates[move - 1] + ')' :
                 'Przejdz na początek gry';
+                
             return (
-                <li key={move}>
-                    <button onClick={() => this.jumpTo(move)}>{desc}</button>
+           
+                <li key={move} >
+                    <button onClick={() => this.jumpTo(move)} className={this.markActualMove(move)}>{desc}</button>
                 </li>
             );
         });
