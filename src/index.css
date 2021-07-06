@@ -51,5 +51,10 @@ ol, ul {
 
   .actualStep {
     font-weight: bold;
+    background-color: aqua;
+  }
+
+  .win {
+    background-color: green;
   }
   
