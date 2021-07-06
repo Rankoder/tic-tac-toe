@@ -68,6 +68,7 @@ class Game extends React.Component {
                 active: false,
                 activeStep: null,            
             }],
+            sort: true,
         };
     }
 
@@ -124,6 +125,12 @@ class Game extends React.Component {
         return null;      
     }
 
+    changeSort() {
+        this.setState({
+            sort: !this.state.sort,
+        })              
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
@@ -139,7 +146,9 @@ class Game extends React.Component {
                     <button onClick={() => this.jumpTo(move)} className={this.markActualMove(move)}>{desc}</button>
                 </li>
             );
-        });
+        });    
+     
+        
         let status;
         
         if (winner) {
@@ -158,7 +167,13 @@ class Game extends React.Component {
                 </div>
                 <div className="game-info">
                     {<div>{status}</div>}
-                    <ol>{moves}</ol>
+                    <ol>{this.state.sort ? moves : moves.reverse()}</ol>
+                    <button key='sort'
+                        onClick= {() => this.changeSort()}
+                    >Zmień sortowanie historii ruchów</button>
+                </div>
+                <div>
+                  
                 </div>
             </div>
         );
