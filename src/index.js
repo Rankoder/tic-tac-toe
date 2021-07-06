@@ -20,6 +20,7 @@ class Board extends React.Component {
                 value={this.props.squares[fieldNumber]}
                 onClick={() => this.props.onClick(fieldNumber)}
                 className={className}
+                key={`square- ${fieldNumber}`}
             />
         );
     }
@@ -37,15 +38,13 @@ class Board extends React.Component {
 
         for(var columnFields = 0; columnFields < maxRowAndColumn; columnFields++) {
             for(var rowFields = 0; rowFields < maxRowAndColumn; rowFields++) {
-                console.log(a,b,c,fieldNumber);
                 if(a === fieldNumber || b === fieldNumber || c === fieldNumber) {
                     rowInRow[fieldNumber] = this.renderSquare(fieldNumber, 'square win');
                 } else {
                     rowInRow[fieldNumber] = this.renderSquare(fieldNumber, 'square');
                 }
                 
-                fieldNumber++;
-                
+                fieldNumber++;                
             }
 
             board.push(
@@ -145,6 +144,12 @@ class Game extends React.Component {
         })              
     }
 
+    moveAllowed(squares) {
+        return squares.every(function (e) {
+            return e !== null;
+        })
+    }
+
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
@@ -161,12 +166,16 @@ class Game extends React.Component {
                 </li>
             );
         });    
-        
+   
+        let moveAllowed = this.moveAllowed(current.squares);
         let status;
         let winnerMoves = null;
+
         if (winner) {
             status = 'Wygrywa: ' + winner[0]['winner'];
             winnerMoves = winner[1]['moves'];
+        } else if(moveAllowed) {
+            status= 'Brak ruchów! Zresetuj!';
         } else {
             status = 'Następny gracz: ' + (this.state.xIsNext ? 'X' : 'O');
         }
@@ -186,9 +195,6 @@ class Game extends React.Component {
                     <button key='sort'
                         onClick= {() => this.changeSort()}
                     >Zmień sortowanie historii ruchów</button>
-                </div>
-                <div>
-                  
                 </div>
             </div>
         );
