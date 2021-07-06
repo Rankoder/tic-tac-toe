@@ -23,25 +23,33 @@ class Board extends React.Component {
         );
     }
 
+    createBoard(fieldNumbers) {
+        var fieldNumber = 0;
+        var maxRowAndColumn = Math.sqrt(fieldNumbers);
+       
+        var rowInRow = [];
+        var board = [];
+
+        for(var columnFields = 0; columnFields < maxRowAndColumn; columnFields++) {
+            for(var rowFields = 0; rowFields < maxRowAndColumn; rowFields++) {
+                rowInRow[fieldNumber] = this.renderSquare(fieldNumber);
+                fieldNumber++;
+            }
+
+            board.push(
+                <div className="board-row">{rowInRow}</div>
+            );
+            rowInRow = [];
+        }
+
+        return (
+            <div>{board}</div>
+        );
+    }
+
     render() {
         return (
-            <div>
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
-                </div>
-            </div>
+             this.createBoard(9)
         );
     }
 }
